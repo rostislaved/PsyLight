@@ -12,7 +12,7 @@ Features:
 * Adjustable heigth of horizontal zones and width of vertical
 * -v - verbose mod to print FPS
 
-It probably never will support anything other than 36x21 LED, as that's all I have, but I left these numbers to be changes in config file, maybe it will work out of the box. But one thing which now is absolutelly not possible to do now - is to change point in which PsyLight suposes your LED strip to start and what direction it goes (clockwise or counterclockwise).
+It probably never will support anything other than 21x36 LED, as that's all I have, but I left these numbers to be changes in config file, maybe it will work out of the box. But one thing which now is absolutelly not possible to do now - is to change point in which PsyLight suposes your LED strip to start and what direction it goes (clockwise or counterclockwise).
 
 <img
 src="https://github.com/Rostislaved/PsyLight/blob/master/Photo%20examples/1.JPG"
