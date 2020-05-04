@@ -1,0 +1,8 @@
+WaitTimeMS = 2
+[LEDS]
+numberOfHorizontalLEDs = 36
+numberOfVerticalLEDs = 21
+
+[ambilight]
+horizontalHeightFraction = 0.1
+verticalWidthFraction = 0.1
