@@ -51,14 +51,14 @@ func New(cfg config.Config) *ambilight {
 	buffer[4] = byte((nLeds - 1) & 0xff)           // LED count low byte
 	buffer[5] = byte(buffer[3] ^ buffer[4] ^ 0x55) // Checksum
 
-	conf := configuration{
-		nTilesHorizontal:         cfg.LEDs.NumberOfHorizontal,
-		horizontalHeightFraction: cfg.Ambilight.HorizontalHeightFraction,
-		nTilesVertical:           cfg.LEDs.NumberOfVertical,
-		verticalWidthFraction:    cfg.Ambilight.VerticalWidthFraction,
-	}
+	//conf := configuration{
+	//	nTilesHorizontal:         cfg.LEDs.NumberOfHorizontal,
+	//	horizontalHeightFraction: cfg.Ambilight.HorizontalHeightFraction,
+	//	nTilesVertical:           cfg.LEDs.NumberOfVertical,
+	//	verticalWidthFraction:    cfg.Ambilight.VerticalWidthFraction,
+	//}
 
-	tiles, err := calcTiles(conf)
+	tiles, err := calcTiles(cfg)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -92,22 +92,29 @@ func (tiles tiles) decrease() {
 	}
 }
 
-func calcTiles(conf configuration) (tiles tiles, err error) {
+func calcTiles(cfg config.Config) (tiles tiles, err error) {
+	nTilesHorizontal := cfg.LEDs.NumberOfHorizontal
+	horizontalHeightFraction := cfg.Ambilight.HorizontalHeightFraction
+	nTilesVertical := cfg.LEDs.NumberOfVertical
+	verticalWidthFraction := cfg.Ambilight.VerticalWidthFraction
+	verticalOffsetFraction := cfg.Ambilight.VerticalOffsetFraction
+	horizontalOffsetFraction := cfg.Ambilight.HorizontalOffsetFraction
+
 	screenWidthInPixels, screenHeightInPixels, err := getScreenSizeInPixels()
 	if err != nil {
 		return
 	}
 
-	horizontalTileWidthInPixels := screenWidthInPixels / conf.nTilesHorizontal
-	horizontalTileHeightInPixels := int(float32(screenHeightInPixels) * conf.horizontalHeightFraction)
+	horizontalTileWidthInPixels := screenWidthInPixels / nTilesHorizontal
+	horizontalTileHeightInPixels := int(float32(screenHeightInPixels) * horizontalHeightFraction)
 
-	verticalTileHeightInPixels := screenHeightInPixels / conf.nTilesVertical
-	verticalTileWidthInPixels := int(float32(screenWidthInPixels) * conf.verticalWidthFraction)
+	verticalTileHeightInPixels := screenHeightInPixels / nTilesVertical
+	verticalTileWidthInPixels := int(float32(screenWidthInPixels) * verticalWidthFraction)
 
 	// Левая вертикаль
-	for i := 0; i < conf.nTilesVertical; i++ {
+	for i := 0; i < nTilesVertical; i++ {
 		tile := tile{
-			x:      0,
+			x:      0 + int(float32(screenWidthInPixels)*verticalOffsetFraction),
 			y:      screenHeightInPixels - (i+1)*verticalTileHeightInPixels,
 			width:  verticalTileWidthInPixels,
 			height: verticalTileHeightInPixels,
@@ -117,10 +124,10 @@ func calcTiles(conf configuration) (tiles tiles, err error) {
 	}
 
 	// Верхняя горизонталь
-	for i := 0; i < conf.nTilesHorizontal; i++ {
+	for i := 0; i < nTilesHorizontal; i++ {
 		tile := tile{
 			x:      i * horizontalTileWidthInPixels,
-			y:      0,
+			y:      0 + int(float32(screenHeightInPixels)*horizontalOffsetFraction),
 			width:  horizontalTileWidthInPixels,
 			height: horizontalTileHeightInPixels,
 		}
@@ -129,9 +136,9 @@ func calcTiles(conf configuration) (tiles tiles, err error) {
 	}
 
 	// Правая вертикаль
-	for i := 0; i < conf.nTilesVertical; i++ {
+	for i := 0; i < nTilesVertical; i++ {
 		tile := tile{
-			x:      screenWidthInPixels - verticalTileWidthInPixels,
+			x:      (screenWidthInPixels - verticalTileWidthInPixels) - int(float32(screenWidthInPixels)*verticalOffsetFraction),
 			y:      i * verticalTileHeightInPixels,
 			width:  verticalTileWidthInPixels,
 			height: verticalTileHeightInPixels,
@@ -141,10 +148,10 @@ func calcTiles(conf configuration) (tiles tiles, err error) {
 	}
 
 	// Нижняя горизонталь
-	for i := 0; i < conf.nTilesHorizontal; i++ {
+	for i := 0; i < nTilesHorizontal; i++ {
 		tile := tile{
 			x:      screenWidthInPixels - (i+1)*horizontalTileWidthInPixels,
-			y:      screenHeightInPixels - horizontalTileHeightInPixels,
+			y:      (screenHeightInPixels - horizontalTileHeightInPixels) - int(float32(screenHeightInPixels)*horizontalOffsetFraction),
 			width:  horizontalTileWidthInPixels,
 			height: horizontalTileHeightInPixels,
 		}

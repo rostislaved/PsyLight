@@ -24,13 +24,12 @@ func (m *measurer) Print() {
 	m.counter++
 	m.timePassed = time.Since(m.currentTime)
 
-	if m.timePassed > time.Second {
-		tIteration := float32(m.timePassed.Milliseconds()) / float32(m.counter)
-		//fmt.Printf("\033[0;100H")
-		fmt.Printf("FPS: %.1f\tt: %.1f мс\n", 1000./tIteration, tIteration)
+	if m.timePassed >= time.Second {
+		tIteration := float64(m.timePassed.Milliseconds()) / float64(m.counter)
+		fmt.Printf("FPS: %.1f\tt: %.1f ms\n", 1000./tIteration, tIteration)
 
-		m.currentTime = time.Now()
 		m.counter = 0
 		m.timePassed = 0
+		m.currentTime = time.Now()
 	}
 }
