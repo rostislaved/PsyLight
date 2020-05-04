@@ -7,4 +7,4 @@ numberOfVerticalLEDs = 21
 horizontalHeightFraction = 0.1 # To determine width of horizontal tiles: horizontalTileWidth = horizontalPixels * horizontalHeightFraction = 2560 * 0.1 = 256
 verticalWidthFraction = 0.1 # To determine height of vertical tiles: verticalTileHeight = verticalPixels * verticalWidthFraction = 1440 * 0.1 = 144
 verticalOffsetFraction = 0 # I don't know why you might need this)
-horizontalOffsetFraction = 0.1
+horizontalOffsetFraction = 0
