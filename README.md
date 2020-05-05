@@ -14,6 +14,10 @@ I used to use [AmbiBox](http://www.ambibox.ru/ru/index.php/%D0%97%D0%B0%D0%B3%D0
 
 It probably never will support anything other than 21x36 LED, as that's all I have, but I left these numbers to be changes in config file, maybe it will work out of the box. But one thing which now is absolutelly not possible to do now - is to change point in which PsyLight suposes your LED strip to start and what direction it goes (clockwise or counterclockwise).
 
+## Configuration
+
+* In config.toml
+
 ## Installation
 * Just run psylight with sudo (sudo needed to connect to usb port)
 * Or change code, compile and run your version
