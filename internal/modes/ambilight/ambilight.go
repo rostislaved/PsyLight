@@ -41,10 +41,7 @@ func filterNearest(buffer []byte) {
 	newBuffer[numberOfHeaderByes+1] = averageColor(colors[len(colors)-numberOfColorsInRGB+1], colors[1], colors[1+numberOfColorsInRGB])
 	newBuffer[numberOfHeaderByes+2] = averageColor(colors[len(colors)-numberOfColorsInRGB+2], colors[2], colors[2+numberOfColorsInRGB])
 
-	for
-	i := 1* numberOfColorsInRGB;
-	i < len(colors)-1*numberOfColorsInRGB;
-	i = i + numberOfColorsInRGB {
+	for i := 1 * numberOfColorsInRGB; i < len(colors)-1*numberOfColorsInRGB; i = i + numberOfColorsInRGB {
 		r := i + 0
 		g := i + 1
 		b := i + 2

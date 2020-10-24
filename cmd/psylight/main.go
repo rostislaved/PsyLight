@@ -14,15 +14,13 @@ import (
 )
 
 func main() {
-	currentDir,err  := os.Open(".")
+	wd, err := os.Getwd()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println("CURRENT PATH:"+currentDir.Name())
-
 	var verboseMod = flag.Bool("v", false, "Show FPS information")
-	var configPath = flag.String("c", ".", "Set config path")
+	var configPath = flag.String("c", wd, "Set config path")
 
 	flag.Parse()
 
