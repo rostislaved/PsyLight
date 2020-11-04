@@ -1,8 +1,12 @@
 package config
 
 import (
+	"fmt"
 	"github.com/spf13/viper"
 	"log"
+	"os"
+	"path/filepath"
+	"strings"
 )
 
 type OutputConfig struct {
@@ -27,11 +31,18 @@ type Config struct {
 	Ambilight    Ambilight `mapstructure:"Ambilight"`
 }
 
-func New(configPath string) Config {
+func New(configPath string, verboseMod bool) Config {
+
 	v := viper.New()
 
-	v.SetConfigName("config")
-	v.AddConfigPath(configPath)
+	dir, file := getDirAndFile(configPath)
+
+	if verboseMod {
+		fmt.Println("Use config: " + filepath.Join(dir, file))
+	}
+
+	v.SetConfigName(file)
+	v.AddConfigPath(dir)
 
 	if err := v.ReadInConfig(); err != nil {
 		log.Fatalf("couldn't load config: %s", err)
@@ -43,4 +54,25 @@ func New(configPath string) Config {
 	}
 
 	return config
+}
+
+func getDirAndFile(configPath string) (string, string) {
+	var dir, file string
+
+	if configPath == "" {
+		exePath, err := os.Executable()
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		dir = strings.TrimSuffix(exePath, filepath.Base(exePath))
+		file = "config"
+	} else {
+		dir, file = filepath.Split(configPath)
+
+		fileRaw := strings.Split(file, ".")
+		file = fileRaw[0]
+	}
+
+	return dir, file
 }
